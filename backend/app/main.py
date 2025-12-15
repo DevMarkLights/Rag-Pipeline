@@ -3,7 +3,7 @@ from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from rag import answer_question
-from generate_answer import generator
+# from generate_answer import generator
 from ingest_and_store import ingest_documents
 import os
 import shutil
