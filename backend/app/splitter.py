@@ -13,7 +13,7 @@ import re
 #     return chunks
 
 
-def chunk_text(text, chunk_size=500, overlap=90):
+def chunk_text(text, chunk_size=350, overlap=60):
     sentences = re.split(r'(?<=[.!?])\s+', text)
     
     chunks = []
