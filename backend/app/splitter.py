@@ -13,7 +13,14 @@ import re
 #     return chunks
 
 
-def chunk_text(text, chunk_size=350, overlap=60):
+def chunk_text(text, chunk_size=350, overlap=60, min_chunk_size=200):
+    text = re.sub(r'(?<=\b[a-zA-Z]{1,3})\s+(?=[a-zA-Z]{1,3}\b)', '', text)
+
+    # Restore space after punctuation if missing
+    text = re.sub(r'([.,;:!?])(?=[A-Za-z])', r'\1 ', text)
+    
+    text = re.sub(r'\s+', ' ', text).strip()
+
     sentences = re.split(r'(?<=[.!?])\s+', text)
     
     chunks = []
@@ -42,6 +49,9 @@ def chunk_text(text, chunk_size=350, overlap=60):
         current_length += sentence_length
 
     if current_chunk:
-        chunks.append(" ".join(current_chunk))
+        chunk = " ".join(current_chunk).strip()
+        # chunks.append(" ".join(current_chunk))
+        if len(chunk) >= min_chunk_size:
+            chunks.append(chunk)
 
     return chunks
