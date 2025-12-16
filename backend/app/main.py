@@ -16,13 +16,13 @@ upload_dir.mkdir(parents=True, exist_ok=True)
 app = FastAPI(debug=True)
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=False,   # MUST be FALSE
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],
+#     allow_credentials=False,   # MUST be FALSE
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
 
 
 class Query(BaseModel):
