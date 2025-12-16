@@ -10,6 +10,9 @@ import shutil
 from pathlib import Path
 from db import collection
 
+upload_dir = Path("data/docs")
+upload_dir.mkdir(parents=True, exist_ok=True)
+
 app = FastAPI(debug=True)
 
 
@@ -56,7 +59,7 @@ async def upload_docs(documents: list[UploadFile] = File(...)):
         if ext not in allowed_extensions:
             return {"error",f'{ext} file type not allowed'}
         
-        file_path = os.path.join(upload_dir, doc.filename).replace('/app', '')
+        file_path = os.path.join(upload_dir, doc.filename)
         
         
         with open(file_path, "wb") as buffer:
