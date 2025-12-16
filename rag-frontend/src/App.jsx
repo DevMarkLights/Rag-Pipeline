@@ -1,12 +1,11 @@
 import { useState } from 'react'
 import './App.css'
-// import {useDropzone} from 'react-dropzone'
 import Dropzone from 'react-dropzone'
 
 function App() {
-  // const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
   const [question,setQuestion] = useState("")
   const [answer,setAnswer] = useState("")
+  const [filesSaved,setFilesSaved] = useState([])
   async function sendFilesToBackend(files){
      const formData = new FormData();
 
@@ -19,7 +18,8 @@ function App() {
       body: formData, // DO NOT set Content-Type manually
     });
     var res = await response.json()
-    console.log(await response.json())
+    // console.log(await response.json())
+    setFilesSaved(res.files)
   }
 
   async function query(){
@@ -34,21 +34,30 @@ function App() {
 
   return (
     <>
+      <h1>RAG</h1>
       <div>
         <p> Add files to query</p>
       </div>
-      <div>
-        <Dropzone onDrop={acceptedFiles => sendFilesToBackend(acceptedFiles)}>
+      <div className='dropzone'>
+        {/* <Dropzone onDrop={acceptedFiles => sendFilesToBackend(acceptedFiles)}>
           {({ getRootProps, getInputProps }) => (
             <div {...getRootProps()}>
               <input {...getInputProps()} />
               <p>Drag files here</p>
             </div>
           )}
-        </Dropzone>
+        </Dropzone> */}
+        <input
+            type="file"
+            multiple
+            onChange={e => sendFilesToBackend([...e.target.files])}
+            // style={styles.fileInput}
+          />
+        <p>files saved:</p>
+        <p>{filesSaved}</p>
       </div>
 
-      <div>
+      <div className='query'>
         <p>Ask question about any of the documents you uploaded</p>
         <input id='question' placeholder='type question' 
           onKeyUp={(e) => {if (e.key === 'Enter'){query()}}} 
