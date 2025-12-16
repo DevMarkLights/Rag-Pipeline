@@ -14,7 +14,7 @@ function App() {
       formData.append("documents", files[i]); // MUST match FastAPI param name
     }
 
-    const response = await fetch("http://localhost:8082/upload", {
+    const response = await fetch("https://marks-pi.com/upload", {
       method: "POST",
       body: formData, // DO NOT set Content-Type manually
     });
@@ -23,7 +23,7 @@ function App() {
   }
 
   async function query(){
-     const response = await fetch("http://localhost:8082/ask", {
+     const response = await fetch("https://marks-pi.com/ask", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({"question":question}), // DO NOT set Content-Type manually
