@@ -2,7 +2,7 @@ import os
 from PyPDF2 import PdfReader
 from docx import Document
 
-def load_documents(folder_path="data/docs"):
+def load_documents(folder_path="data/docs",UPLOADED_FILENAME_FILE_PATH=""):
     documents=[]
     filenames = []
     for filename in os.listdir(folder_path):
@@ -27,9 +27,9 @@ def load_documents(folder_path="data/docs"):
             text = "\n".join([para.text for para in doc.paragraphs])
             documents.append([filename,text])
 
-    with open("filesUploaded.txt", "a") as file:
+    with open(UPLOADED_FILENAME_FILE_PATH, "a") as file:
         for f in filenames:
-            file.write(f)
+            file.write(f'{f}\n')
     
     return documents
             

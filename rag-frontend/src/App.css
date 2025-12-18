@@ -1,56 +1,62 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.body {
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+}
+
+.leftSide{
+  padding-left: 5px;
+  min-width: 15%;
+  border-right: .5px dashed grey;
+}
+.leftSide p{
+  font-weight: 800;
+}
+
+.leftSide button{
+  margin: 15px 0 0 0 ;
+  color: red;
+}
+
+ul {
+  list-style: none;
+  margin: 2px 0 0 10px;
+  padding-left: 0;
+}
+
+.rightSide{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  min-width: 80%;
+  border-left: 1px dashed grey
+}
+
+.fileDropDiv{
   text-align: center;
+  border-bottom: 1px solid black;
+  min-width: 50%;
 }
 
-.dropzone {
-  min-height: 100px;
-  height: 100px;
+
+.answer{
+ max-width: 90%;
+ text-align: center;
 }
 
-.dropzone p{
-  margin: 4px 0 4px 0;
-}
-
-.query input{
-  min-width: 100px;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* target phones */
+@media (max-width: 639px) {  
+  .leftSide{
+    min-width: 20%;
   }
-  to {
-    transform: rotate(360deg);
+  .rightSide{
+    min-width: 60%;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .query{
+    max-width: 80%;
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  
 }

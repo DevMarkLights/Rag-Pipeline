@@ -10,10 +10,23 @@ import shutil
 from pathlib import Path
 from db import collection
 
+print("Running from:", os.getcwd())
+BASE_DIR = Path(__file__).resolve().parent
+UPLOADED_FILENAME_FILE_PATH = BASE_DIR / "filesUploaded.txt"
+# print(UPLOADED_FILES_FILE_PATH)
+
 upload_dir = Path("data/docs")
 upload_dir.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI()
+if not str(BASE_DIR).__contains__("marks-pi"):
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=False,   # MUST be FALSE
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     
 upload_dir = "data/docs"
@@ -36,7 +49,7 @@ async def deleteDocuments():
     if ids:
         collection.delete(ids=ids)
     
-    with open("filesUploaded.txt","w") as file: # clear file names
+    with open(UPLOADED_FILENAME_FILE_PATH,"w") as file: # clear file names
         file.write("")
     
     return {'status':'documents deleted'}
@@ -58,7 +71,7 @@ async def upload_docs(documents: list[UploadFile] = File(...)):
         
         saved_files.append(doc.filename)
     
-    ingest_documents()
+    ingest_documents(UPLOADED_FILENAME_FILE_PATH)
     
     # remove files from folder
     for item in Path(upload_dir).iterdir():
@@ -70,10 +83,10 @@ async def upload_docs(documents: list[UploadFile] = File(...)):
         "files": saved_files
     }
     
-@app.get("filesInDB")
+@app.get("/filesInDB")
 def getFileNamesInDb():
     fileNames = []
-    with open("filesUploaded.txt", "r") as file:
+    with open(UPLOADED_FILENAME_FILE_PATH, "r") as file:
         for fn in file:
             fileNames.append(fn)
 

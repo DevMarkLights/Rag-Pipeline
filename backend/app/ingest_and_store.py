@@ -3,8 +3,8 @@ from splitter import chunk_text
 from embeddings import embed_text
 from db import collection
 
-def ingest_documents():
-    docs = load_documents("data/docs")
+def ingest_documents(UPLOADED_FILENAME_FILE_PATH):
+    docs = load_documents("data/docs",UPLOADED_FILENAME_FILE_PATH)
     
     for fileName, doc in docs:
         chunks = chunk_text(doc)
