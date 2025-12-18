@@ -13,20 +13,8 @@ from db import collection
 upload_dir = Path("data/docs")
 upload_dir.mkdir(parents=True, exist_ok=True)
 
-app = FastAPI(debug=True)
+app = FastAPI()
 
-
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],
-#     allow_credentials=False,   # MUST be FALSE
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
-
-
-class Query(BaseModel):
-    question: str
     
 upload_dir = "data/docs"
 allowed_extensions = {".pdf", ".txt", ".docx"}
@@ -34,7 +22,7 @@ allowed_extensions = {".pdf", ".txt", ".docx"}
 @app.post("/ask")
 async def ask_question(query: dict = Body(...)):
     result = answer_question(query['question'])
-    # result = generator(result, query.question)
+    # result = generator(result, query.question) # for LLM but Pi 5 is not strong enough
     return {"answer": result}
 
 @app.get("/documentCount")
@@ -48,13 +36,16 @@ async def deleteDocuments():
     if ids:
         collection.delete(ids=ids)
     
+    with open("filesUploaded.txt","w") as file: # clear file names
+        file.write("")
+    
     return {'status':'documents deleted'}
 
 @app.post("/upload")
 async def upload_docs(documents: list[UploadFile] = File(...)):
     saved_files = []
     for doc in documents:
-        #save documents to folder
+        # save documents to folder
         ext = Path(doc.filename).suffix.lower()
         if ext not in allowed_extensions:
             return {"error",f'{ext} file type not allowed'}
@@ -79,6 +70,14 @@ async def upload_docs(documents: list[UploadFile] = File(...)):
         "files": saved_files
     }
     
+@app.get("filesInDB")
+def getFileNamesInDb():
+    fileNames = []
+    with open("filesUploaded.txt", "r") as file:
+        for fn in file:
+            fileNames.append(fn)
+
+    return {"files":fileNames}    
 
 if __name__ == "__main__":
     import uvicorn
