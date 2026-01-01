@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile, Body
+from fastapi import FastAPI, File, UploadFile, Body, Form
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -55,9 +55,9 @@ async def deleteDocuments():
     return {'status':'documents deleted'}
 
 @app.post("/upload")
-async def upload_docs(documents: list[UploadFile] = File(...)):
+async def upload_docs(documents: list[UploadFile] = File(...), chunkSize: list[str] = Form(...)):
     saved_files = []
-    for doc in documents:
+    for index,doc in enumerate(documents):
         # save documents to folder
         ext = Path(doc.filename).suffix.lower()
         if ext not in allowed_extensions:
@@ -71,7 +71,7 @@ async def upload_docs(documents: list[UploadFile] = File(...)):
         
         saved_files.append(doc.filename)
     
-    ingest_documents(UPLOADED_FILENAME_FILE_PATH)
+    ingest_documents(UPLOADED_FILENAME_FILE_PATH, chunkSize[index])
     
     # remove files from folder
     for item in Path(upload_dir).iterdir():

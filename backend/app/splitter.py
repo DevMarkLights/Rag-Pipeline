@@ -1,17 +1,5 @@
 import re
 
-# def chunk_text(text,chunk_size=500,overlap=50):
-#     chunks=[]
-#     start=0
-#     text_length = len(text)
-    
-#     while start < text_length:
-#         end = min(start + chunk_size, text_length)
-#         chunks.append(text[start:end])
-#         start += chunk_size - overlap
-    
-#     return chunks
-
 
 def chunk_text(text, chunk_size=500, overlap=80, min_chunk_size=200):
     # text = re.sub(r'(?<=\b[a-zA-Z]{1,3})\s+(?=[a-zA-Z]{1,3}\b)', '', text)
