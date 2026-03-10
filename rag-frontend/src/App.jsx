@@ -31,8 +31,12 @@ function App() {
     try{
       const formData = new FormData();
       filesToBeUploaded.forEach((item,index) => {
-        formData.append("chunkSize", chunkSizes[index])
+        // formData.append("chunkSize", chunkSizes[index])
         formData.append("documents", item)
+      })
+
+      chunkSizes.forEach((item,index) => {
+        formData.append('chunkSize',item)
       })
 
       const response = await fetch("https://marks-pi.com/apiRag/upload", {
